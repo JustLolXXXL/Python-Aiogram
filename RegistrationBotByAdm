@@ -1,0 +1,26 @@
+from aiogram import Bot, Dispatcher, F # Here we don't need F, but I saved it for me
+from aiogram.types import Message
+from aiogram.filters import Command, CommandStart # Here we don't need Command, but I saved it for me
+
+import asyncio
+
+bot = Bot("", parse_mode="HTML")
+dp = Dispatcher()
+
+channel_id = ''
+
+@dp.message(CommandStart())
+async def start(message: Message):
+    await message.answer(f"Hello! Write down your Bio")
+
+@dp.message()
+async def application_start(message: Message):
+    await bot.send_message(channel_id, message.text)
+    await bot.send_message(message.chat.id, f"Ok, I sended your Bio to administration, please wait, while your application is being processed <b>=)</b>")
+
+async def main():
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    asyncio.run(main())
